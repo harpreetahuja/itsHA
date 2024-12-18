@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Name Score Calculator</title>
+    <!-- Previous styles remain unchanged -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 5px;
+            font-size: 16px;
+            display: none;
+        }
+
+        .calculation {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .meaning {
+            margin-top: 20px;
+            padding: 20px;
+            background-color: #fff3e0;
+            border-radius: 5px;
+            border-left: 4px solid #ff9800;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ Name Score Calculator ✨</h1>
+        
+        <div class="input-group">
+            <input type="text" id="nameInput" placeholder="Enter your name" maxlength="50">
+        </div>
+
+        <button onclick="calculateNameScore()">Calculate Score</button>
+
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // Add event listener for Enter key
+        document.getElementById('nameInput').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                calculateNameScore();
+            }
+        });
+
+        function calculateNameScore() {
+            const name = document.getElementById('nameInput').value.trim().toLowerCase();
+            
+            if (!name) {
+                alert('Please enter a name!');
+                return;
+            }
+
+            // Letter values
+            const letterValues = {
+                'a': 1, 'b': 2, 'c': 3, 'd': 4, 'e': 5,
+                'f': 8, 'g': 3, 'h': 5, 'i': 1, 'j': 1,
+                'k': 2, 'l': 3, 'm': 4, 'n': 5, 'o': 7,
+                'p': 8, 'q': 1, 'r': 2, 's': 3, 't': 4,
+                'u': 6, 'v': 6, 'w': 6, 'x': 5, 'y': 1,
+                'z': 7
+            };
+
+            // Calculate score and keep track of calculation
+            let score = 0;
+            let calculation = [];
+            
+            for (let char of name) {
+                if (letterValues[char]) {
+                    score += letterValues[char];
+                    calculation.push(`${char.toUpperCase()}: ${letterValues[char]}`);
+                }
+            }
+
+            // Get appropriate response based on score range
+            let response;
+            if (score < 10) {
+                response = "Your name number is less than 10. Consider adding more letters to your name for a fuller numerological analysis.";
+            } else if (score > 73) {
+                response = "Your name number is greater than 73. Consider consulting a numerologist for a detailed analysis.";
+            } else {
+                response = getResponse(score);
+            }
+
+            // Display result
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `
+                <div class="calculation">
+                    <strong>Name Analysis:</strong><br>
+                    ${calculation.join(' + ')} = ${score}
+                </div>
+                <div class="meaning">
+                    <strong>Your Name Number: ${score}</strong><br><br>
+                    ${response}
+                </div>
+            `;
+        }
+
+        function getResponse(score) {
+            const responses = {
+                10: "Hey, Congratulations! If you remain truthful and honest, you will attain good fame and prosperity, but be prepared for ups and downs like a joint wheel ride!",
+                11: "Oh no, this is an ominous Number, number of hidden dangers, trails, and treachery from others.",
+                12: "You possess good speaking skills, can expect late success, anxiety caused by others, though you have the blessings of Planet Jupiter.",
+                13: "Denotes a major turning point in your life, you can expect a sudden and unexpected incident.",
+                14: "Number of moments, success and expansion, but there is some danger from fire, water or air. Good for business and not for individuals.",
+                15: "Congratulations! You have the blessings of Goddess Lakshmi! You can expect a luxurious life if 6 happens to be one of your lucky numbers.",
+                16: "Number Indicates some unexpected fatality all of a sudden, there will be a possibility of accidents and failures.",
+                17: "Represents peace and love, will attain high position and success after initial struggles and failures.",
+                18: "You will struggle to balance material life with spirituality because of extreme passion and fantasies, you may resort to wrong ways to earn money.",
+                19: "What a lucky person you are! You will live a king's or a queen's life and will enjoy all the pleasures. A great name if 1 happens to be a lucky number for you.",
+                20: "Not a materialistic number, indicates delays, failures, healing and self-assessment.",
+                21: "WoW, That's what I call a lucky number! It is a number of advancement, honours and elevation in life. Excellent number if 3 is one of your lucky number.",
+                22: "Oh no! It is a Number of illusions & Delusions, making the person highly emotional and indicates repetition of Obstacles.",
+                23: "Terrific number! You will lead a successful life and get support from your superiors. Very Good number if 5 is lucky for you.",
+                24: "You can expect Gains from the Opposite Sex, Number denotes true love, support & trust. Very good number if 6 is your lucky number.",
+                25: "Number gives success after a lot of sacrifices and efforts, indicates late success. You can attract masses.",
+                26: "Oh no, it is an Ominous Number with grave warnings. Life will be completely ruined.",
+                27: "Oh Man! What a number to have as your name number! Denotes creativity, success, authority, power, command, name, fame, joy & luck. Very good number if 9 is your lucky number.",
+                28: "Self-confidence, great promises but can be deceived by others. Do not blindly trust others, may have to face the law.",
+                29: "You deserve better than just hidden setbacks, unreliable friends, unsuccessful love and deception by the opposite sex.",
+                30: "Your Number has mysterious powers and you can achieve great things if stay mentally strong.",
+                31: "This is a number of Loneliness & Solitude, Not a lucky number for family and material perspective.",
+                32: "Magical number! Number of name, fame, prestige & success if 5 happens to be one of your lucky numbers, but, take your own decisions!",
+                33: "Denotes Wisdom, happiness & a luxurious life. A good number for both material and spiritual life if 6 is your lucky number.",
+                34: "A Good number for real estate and foreign travels. However, Must avoid unsafe investments, speculation & gambling, number of mixed fortunes.",
+                35: "This number gives sudden rise, but not good for relationships. You will suffer from loneliness and lack of support from others and face lot of obstacles and accidents.",
+                36: "You succeed only when you are away from your home! So, either you move away from your hometown or change the nature of what you are doing.",
+                37: "That's an unbelievably lucky number! Person makes progress with the help of opposite sex. Great number if 1 is your lucky number.",
+                38: "It is a good number for spirituality, power & success, but if you become careless, you can face misunderstandings and losses.",
+                39: "You cook the food and serve it to others more often than not, than eating yourself.",
+                40: "Can acquire authoritative positions, can become great speakers and writers.",
+                41: "Most powerful number in the universe! You can achieve what is impossible for others, stay on if you can manage relationships.",
+                42: "You Will always be eager to learn new things and will be successful in creative fields. Very good number if 6 is your lucky number.",
+                43: "Number of Strife & Struggle. Will face repeat obstacles, failures, losses and defeats.",
+                44: "OMG! This number represents fatality & greed. May attract law suits and dreaded diseases.",
+                45: "This is a powerful number. Can manage large organizations, fulfil ambitions & turn dreams into reality, great number if 9 is your friend.",
+                46: "Number of invincibility, no one can touch you! You Will lead a luxurious life if 1 is your lucky number.",
+                47: "A number of movement & expansion, but avoid going into deep water especially if you don't know swimming!",
+                48: "Number of contradictions and frequent failures. Person lives under the command of others.",
+                49: "It is a powerful number with hidden setbacks, provides good leadership qualities, will encounter mixed fortunes.",
+                50: "You get very good support from your spouse. A good number if 5 is your friend.",
+                51: "Number of sudden advancements and unexpected gains and victory. Wait, there are dangers from enemies.",
+                52: "A spiritual number with strong intuition, A number with mysterious powers and can help you win in difficult situations.",
+                53: "Number governed by planet Saturn, will have good judgemental powers, but personal life is unstable.",
+                54: "Number of prosperity, intelligence and fame in society. A very good number if 9 is your friend.",
+                55: "One of the best numbers known as Number of victory! You are bound to win in every situation and will lead a successful life.",
+                56: "You can achieve things which are considered as very difficult or impossible by others, but may suffer from mental disorders.",
+                57: "Number of stagnation and contradiction, will struggle to move forward in life in spite of best efforts.",
+                58: "Denotes love, care and peace. They achieve success in every filed, but be careful while believing others, you may be deceived.",
+                59: "Number of supernatural powers, they are protected by unseen divine powers, very good number if 5 is your lucky number.",
+                60: "A perfect number! You will be lively, cheerful, jovial and will lead a beautiful life, an excellent number for a perfect life if 6 happens to be your lucky number.",
+                61: "This is a number which helps you lead a good material life, stop troubling others and you will live in peace!",
+                62: "Number indicates high morality, material success, lot of enemies, ability to conquer fear and an unstable personal life.",
+                63: "Generosity, helpfulness, good health and inclination to spend a lot. Save money, otherwise you may go bankrupt!",
+                64: "Good Number for businessmen and people who like freedom, they love freedom so much that they may end up staying single whole life!",
+                65: "Denotes pleasure, good relationships, loving spouse and good social connections, but there is a fear of accidents and injuries, so take care of yourself.",
+                66: "One of the best numbers, denotes destruction of enemies and success in all fronts of life, feel lucky to have this as your name number if 3 is one of your lucky numbers.",
+                67: "Number of vivid imagination, creativity, peace and communication, a good number to have as your name number.",
+                68: "Number of obstacles, losses and failures. Person will struggle to move forward in life and face repeated road blocks, an unlucky number.",
+                69: "Successful married life, steady financial gains and a comfortable life with lot of friends to chill with. Very good number if 6 is one of your lucky numbers.",
+                70: "Slow and steady growth, will lead a luxurious life in the second half of life, a good number to have for those who can wait!",
+                71: "Number of struggle and disappointments, will suffer in relationships and find it very hard to achieve material success.",
+                72: "Number of material success especially in the later part after lot of struggle in the beginning, if lucky, will inherit ancestor wealth, over all a good number for number 9 people.",
+                73: "Excellent number for people with 1 as lucky number, indicates freedom, wisdom, popularity and recognition in the society."
+            };
+            return responses[score];
+        }
+    </script>
+</body>
+</html>
